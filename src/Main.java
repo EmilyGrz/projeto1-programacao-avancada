@@ -5,6 +5,7 @@ import model.Disciplina;
 import model.Professor;
 import model.Aluno;
 import service.GestorAcademico;
+import java.util.InputMismatchException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -38,54 +39,77 @@ public class Main {
                     break;
                 
                 case 4:
-                    System.out.println("Cadastro de Aluno");
-                    System.out.print("Nome: ");
-                    String nome = scanner.nextLine();
-                    System.out.println("CPF: ");
-                    String cpf = scanner.nextLine();
-                    System.out.println("Idade: ");
-                    int idade = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.println("RA: ");
-                    String matricula = scanner.nextLine();
-
-                    System.out.println("Código do curso: ");
-                    String cod_curso = scanner.nextLine();
-
-                    gestorAcademico.adicionarAluno(nome, cpf, idade, matricula);
-
-                    gestorAcademico.matricularAlunoCurso(matricula, cod_curso);
-
+                     try {
+                        System.out.println("Cadastro de Aluno");
+                        System.out.print("Nome: ");
+                        String nome = scanner.nextLine();
+                        if (!nome.matches("[a-zA-Z\\s]+")) throw new IllegalArgumentException("Nome deve conter apenas letras.");
+                        System.out.print("CPF: ");
+                        String cpf = scanner.nextLine();
+                        if (!cpf.matches("\\d+")) throw new IllegalArgumentException("CPF deve conter apenas números.");
+                        System.out.print("Idade: ");
+                        int idade = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("RA: ");
+                        String matricula = scanner.nextLine();
+                        System.out.print("Código do curso: ");
+                        String cod_curso = scanner.nextLine();
+                        gestorAcademico.adicionarAluno(nome, cpf, idade, matricula);
+                        gestorAcademico.matricularAlunoCurso(matricula, cod_curso);
+                    } catch (InputMismatchException e) {
+                        System.out.println("Erro: Valor inválido digitado. Tente novamente.");
+                        scanner.nextLine();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
 
                 case 5:
-                    System.out.print("Nome do Curso: ");
-                    String nomeCurso = scanner.nextLine();
-                    System.out.print("Carga Horária: ");
-                    int cargaHoraria = scanner.nextInt();
-                    scanner.nextLine(); // Consumir a quebra de linha
-                    System.out.print("Código do Curso: ");
-                    String codigoCurso = scanner.nextLine();
-                    Curso novoCurso = new Curso(nomeCurso, cargaHoraria, codigoCurso);
-                    gestorAcademico.adicionarCurso(novoCurso);
+                    try {
+                        System.out.print("Nome do Curso: ");
+                        String nomeCurso = scanner.nextLine();
+                        if (!nomeCurso.matches("[a-zA-Z\\s]+")) throw new IllegalArgumentException("O nome do curso deve conter apenas letras.");
+                        System.out.print("Carga Horária: ");
+                        int cargaHoraria = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Código do Curso: ");
+                        String codigoCurso = scanner.nextLine();
+                        Curso novoCurso = new Curso(nomeCurso, cargaHoraria, codigoCurso);
+                        gestorAcademico.adicionarCurso(novoCurso);
+                    } catch (InputMismatchException e) {
+                        System.out.println("Erro: Digite apenas números para carga horária.");
+                        scanner.nextLine();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
+                    
                 case 6:
-                    System.out.print("Nome do Professor: ");
-                    String nomeProfessor = scanner.nextLine();
-                    System.out.print("CPF do Professor: ");
-                    String cpfProfessor = scanner.nextLine();
-                    System.out.print("Idade do Professor: ");
-                    int idadeProfessor = scanner.nextInt();
-                    scanner.nextLine(); // Consumir a quebra de linha
-                    System.out.print("Matrícula do Professor: ");
-                    String matriculaProfessor = scanner.nextLine();
-                    System.out.print("Especialidade do Professor: ");
-                    String especialidade = scanner.nextLine();
-                    System.out.print("Salário do Professor: ");
-                    double salario = scanner.nextDouble();
-                    scanner.nextLine(); // Consumir a quebra de linha
-                    Professor novoProfessor = new Professor(nomeProfessor, cpfProfessor, idadeProfessor, matriculaProfessor, especialidade, salario);
-                    gestorAcademico.adicionarProfessor(novoProfessor);
+                    try {
+                        System.out.print("Nome do Professor: ");
+                        String nomeProfessor = scanner.nextLine();
+                        if (!nomeProfessor.matches("[a-zA-Z\\s]+")) throw new IllegalArgumentException("Nome deve conter apenas letras.");
+                        System.out.print("CPF do Professor: ");
+                        String cpfProfessor = scanner.nextLine();
+                        if (!cpfProfessor.matches("\\d+")) throw new IllegalArgumentException("CPF deve conter apenas números.");
+                        System.out.print("Idade do Professor: ");
+                        int idadeProfessor = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Matrícula do Professor: ");
+                        String matriculaProfessor = scanner.nextLine();
+                        System.out.print("Especialidade do Professor: ");
+                        String especialidade = scanner.nextLine();
+                        System.out.print("Salário do Professor: ");
+                        double salario = scanner.nextDouble();
+                        scanner.nextLine();
+                        Professor novoProfessor = new Professor(nomeProfessor, cpfProfessor, idadeProfessor, matriculaProfessor, especialidade, salario);
+                        gestorAcademico.adicionarProfessor(novoProfessor);
+                    } catch (InputMismatchException e) {
+                        System.out.println("Erro: Verifique se digitou corretamente idade ou salário.");
+                        scanner.nextLine();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
                     break;
                 case 0:
                     System.out.println("Saindo...");
